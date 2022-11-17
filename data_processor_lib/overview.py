@@ -2,6 +2,13 @@ import pandas as pd
 
 
 def overview(df):
+    ''' 
+    Takes a data frame and calculate some overall information about the
+    data frame. 
+
+    This functions is similar to pandas describe method, but provide more
+    additional insights. 
+    '''
     ov_idx = [
         "Total Columns",
         "Total Rows",

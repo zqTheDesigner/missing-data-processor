@@ -1,13 +1,16 @@
 import pandas as pd
 
 from .overview import overview as _overview
+from .insights import insights as _insights
 
 class Processor:
     def __init__(self):
         print("Profiler initialized")
 
     def read_csv(self, filepath):
+        # The data frame to be focused
         self.df = pd.read_csv(filepath)
+        # Back up of the original data frame
         self.orig_df = self.df
 
     def head(self, *args):
@@ -29,3 +32,6 @@ class Processor:
 
     def overview(self):
         return _overview(self.df)
+
+    def insights(self):
+        return _insights(self.df)
