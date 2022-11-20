@@ -7,7 +7,6 @@ def insights(df):
     """
     ins_idx = [
         "Valid Data Count",
-        "Valid Data (%)",
         "Missing Data Count",
         "Missing Data (%)",
         "Data Type",
@@ -20,21 +19,38 @@ def insights(df):
         "75%",
         "Mode Value",
         "Mode Count",
-        "Unique Values"
-        "Unique Values Count",
+        "Unique Values" "Unique Values Count",
     ]
 
     ins = pd.DataFrame(index=ins_idx)
 
-    # na_df = df.isnull()
-
-    # print(na_df.head())
-
-    # for k, v in na_df.items():
-    #     ins.at['Missing Data Count', k] = len(v)
+    # Fill up entire data frame with '-', because NaN is visually confusing
+    for k, v in df.items():
+        for n in ins_idx:
+            ins.at[n, k] = "-"
 
     for k, v in df.items():
-        ins.at['Missing Data Count', k] = v.isnull().sum()
-        ins.at['Valid Data Count', k] = len(v) - int(v.isnull().sum()) 
+        missing_data = v.isnull().sum()
+        total_data = v.count().sum()
+        ins.at["Valid Data Count", k] = total_data
+        ins.at["Missing Data Count", k] = missing_data
+        ins.at["Missing Data (%)", k] = round(missing_data / total_data, 4) * 100
+        ins.at["Data Type", k] = v.dtype
+
+    for k, v in df.mean(skipna=True, numeric_only=True).items():
+        mean = round(v, 2)
+        ins.at["Mean", k] = mean
+
+    for k, v in df.median(skipna=True, numeric_only=True).items():
+        median = round(v, 2)
+        ins.at["Median", k] = median
+
+    for k, v in df.min(skipna=True, numeric_only=True).items():
+        min = round(v, 2)
+        ins.at["Min", k] = min
+
+    for k, v in df.max(skipna=True, numeric_only=True).items():
+        max = round(v, 2)
+        ins.at["Max", k] = max
 
     return ins
