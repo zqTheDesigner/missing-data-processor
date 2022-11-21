@@ -1,6 +1,16 @@
 import pandas as pd
 
 
+def get_value(v, k, to_round=2):
+    if not k in v:
+        return "-"
+
+    if isinstance(v[k], float):
+        return round(v[k], to_round)
+    else:
+        return v[k]
+
+
 def insights(df):
     """
     Return a dataframe table of data insights of each column
@@ -15,19 +25,20 @@ def insights(df):
         "Min",
         "Max",
         "Standard Deviation",
-        "25%",
-        "75%",
-        "Mode Value",
+        "25% Quantile",
+        "75% Quantile",
+        "Mode",
         "Mode Count",
-        "Unique Values" "Unique Values Count",
+        "Unique Values",
+        "Unique Values Count",
     ]
 
     ins = pd.DataFrame(index=ins_idx)
 
     # Fill up entire data frame with '-', because NaN is visually confusing
-    for k, v in df.items():
-        for n in ins_idx:
-            ins.at[n, k] = "-"
+    # for k, v in df.items():
+    #     for n in ins_idx:
+    #         ins.at[n, k] = "-"
 
     for k, v in df.items():
         missing_data = v.isnull().sum()
@@ -37,20 +48,24 @@ def insights(df):
         ins.at["Missing Data (%)", k] = round(missing_data / total_data, 4) * 100
         ins.at["Data Type", k] = v.dtype
 
-    for k, v in df.mean(skipna=True, numeric_only=True).items():
-        mean = round(v, 2)
-        ins.at["Mean", k] = mean
+    mean = df.mean(skipna=True, numeric_only=True)
+    median = df.median(skipna=True, numeric_only=True)
+    min = df.min(skipna=True, numeric_only=True)
+    max = df.max(skipna=True, numeric_only=True)
+    std = df.std(skipna=True, numeric_only=True)
+    quantile_25 = df.quantile(q=0.25, numeric_only=True)
+    quantile_75 = df.quantile(q=0.75, numeric_only=True)
+    mode = df.mode()
 
-    for k, v in df.median(skipna=True, numeric_only=True).items():
-        median = round(v, 2)
-        ins.at["Median", k] = median
-
-    for k, v in df.min(skipna=True, numeric_only=True).items():
-        min = round(v, 2)
-        ins.at["Min", k] = min
-
-    for k, v in df.max(skipna=True, numeric_only=True).items():
-        max = round(v, 2)
-        ins.at["Max", k] = max
+    for k in df.columns:
+        ins.at["Mean", k] = get_value(mean, k)
+        ins.at["Median", k] = get_value(median, k)
+        ins.at["Min", k] = get_value(min, k)
+        ins.at["Max", k] = get_value(max, k)
+        ins.at["Standard Deviation", k] = get_value(std, k)
+        ins.at["25% Quantile", k] = get_value(quantile_25, k)
+        ins.at["75% Quantile", k] = get_value(quantile_75, k)
+        ins.at["Mode", k] = mode[k][0]
+        ins.at["Mode Count", k] = df[k].value_counts()[mode[k][0]]
 
     return ins
