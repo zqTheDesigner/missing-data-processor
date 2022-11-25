@@ -29,8 +29,8 @@ def insights(df):
         "75% Quantile",
         "Mode",
         "Mode Count",
-        "Unique Values",
         "Unique Values Count",
+        "Unique Values (%)",
     ]
 
     ins = pd.DataFrame(index=ins_idx)
@@ -67,5 +67,9 @@ def insights(df):
         ins.at["75% Quantile", k] = get_value(quantile_75, k)
         ins.at["Mode", k] = mode[k][0]
         ins.at["Mode Count", k] = df[k].value_counts()[mode[k][0]]
+        ins.at["Unique Values Count", k] = df[k].drop_duplicates().count()
+        ins.at["Unique Values (%)", k] = (
+            round(df[k].drop_duplicates().count() / df[k].count().sum(), 4) * 100
+        )
 
     return ins
