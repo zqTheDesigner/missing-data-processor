@@ -2,6 +2,7 @@ import pandas as pd
 
 from .overview import overview as _overview
 from .insights import insights as _insights
+from .impute import impute as _impute
 
 
 class Processor:
@@ -39,7 +40,7 @@ class Processor:
 
     def set_sample(self, n=None, frac=None, type="random"):
         """
-        Extract a sample from self.df for continue expermental
+        Extract a sample from self.df for continue experimental
         """
         self.sample = self.df.sample(n=n, frac=frac).sort_index()
 
@@ -69,15 +70,18 @@ class Processor:
         """
         return self.df[self.df.isnull().any(axis=1)]
 
-    # All inputation functions
-    def impute_sample(self):
+    # All imputation functions
+    def impute_sample(self, columns, strategies):
         """
         For each column in sample dataFrame, apply the default
         or provided imputation method.
+
+        Every strategy will be applied to every columns
         """
+        self.sample = _impute(self.sample, columns, strategies)
         pass
 
-    def impute_sample_column(self):
+    def impute_sample_columns(self, columns):
         """
         Apply imputation method to the particular sample column
         """
