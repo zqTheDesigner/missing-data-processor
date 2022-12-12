@@ -81,22 +81,9 @@ class Processor:
         self.sample = _impute(self.sample, columns, strategies)
         pass
 
-    def impute_sample_columns(self, columns):
-        """
-        Apply imputation method to the particular sample column
-        """
-        pass
-
     def impute_column(self):
         """
-        Apply one or multiple imputation stragety to a particulart column
-        """
-        pass
-
-    def impute(self):
-        """
-        Impute the entire dataFrame with a default or
-        provided imputation method
+        Apply one or multiple imputation strategy to a particular column
         """
         pass
 

@@ -7,6 +7,10 @@ class ImputationStrategies:
         median = df[column].median(skipna=True)
         df[column + "_median"] = df[column].fillna(median).astype(float)
 
+    def mode_imputation(df, column):
+        mode = df[column].mode()
+        df[column + "_mode"] = df[column].fillna(mode).astype(float)
+
 
 def impute(df, columns, strategies):
     """
