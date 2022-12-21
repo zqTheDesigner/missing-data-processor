@@ -1,8 +1,8 @@
 import pandas as pd
 
-from .overview import overview as _overview
-from .insights import insights as _insights
-from .impute import impute as _impute
+from ..overview import overview as _overview
+from ..insights import insights as _insights
+from ..impute import impute as _impute
 
 
 class Processor:
