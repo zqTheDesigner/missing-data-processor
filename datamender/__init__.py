@@ -1,18 +1,24 @@
+from .core.overview import overview as _overview
+from .core.insights import insights as _insights
+from .core.graphs import graphs as _graphs
+from .core.setfocus import setfocus as _setfocus
+
 class Mender:
     def __init__(self, df):
         self.df = df
 
     def overview(self):
-        pass
+        return _overview(self.df)
 
     def insights(self):
+        return _insights(self.df)
+
+    def graphs(self, kind = "line"):
+        _graphs(self.df, kind)
         pass
 
-    def graphs(self):
-        pass
-
-    def set_focus(self):
-        pass
+    def set_focus(self, rows = None, columns = None):
+        self.df = _setfocus(self.df, rows, columns)
 
     def set_ignore(self):
         pass
