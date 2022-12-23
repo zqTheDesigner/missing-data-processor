@@ -2,6 +2,9 @@ from .core.overview import overview as _overview
 from .core.insights import insights as _insights
 from .core.graphs import graphs as _graphs
 from .core.setfocus import setfocus as _setfocus
+from .core.setignore import setignore as _setignore
+from .core.impute import impute as _impute
+from .core.impute import ImputationStrategies
 
 class Mender:
     def __init__(self, df):
@@ -15,16 +18,18 @@ class Mender:
 
     def graphs(self, kind = "line"):
         _graphs(self.df, kind)
-        pass
 
-    def set_focus(self, rows = None, columns = None):
+    def setfocus(self, rows = None, columns = None):
         self.df = _setfocus(self.df, rows, columns)
 
-    def set_ignore(self):
-        pass
+    def setignore(self, rows = None, columns = None):
+        self.df = _setignore(self.df, rows, columns)
 
-    def impute_column(self):
-        pass
+    def show_incomplete(self):
+        return self.df[self.df.isnull().any(axis=1)]
+
+    def impute_columns(self, columns, strategies, inplace=False):
+        _impute(self.df, columns, strategies, inplace)
 
     def impute(self):
         pass
