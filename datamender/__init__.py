@@ -10,6 +10,8 @@ from .core.impute import ImputationStrategies
 from .core.encode import encode as _encode
 from .core.encode import EncodingStrategies
 
+from .core.amend_column import amend_column as _amend_column
+
 
 class Mender:
     def __init__(self, df):
@@ -30,11 +32,11 @@ class Mender:
     def setignore(self, rows=None, columns=None):
         self.df = _setignore(self.df, rows, columns)
 
-    def show_incomplete(self):
-        return self.df[self.df.isnull().any(axis=1)]
+    def show_incomplete(self, count = 5):
+        return self.df[self.df.isnull().any(axis=1)].head(count)
 
-    def impute_columns(self, columns, strategies, inplace=False):
-        _impute(self.df, columns, strategies, inplace)
+    def impute_columns(self, columns, strategies, inplace=False, capture_likelihood=False):
+        _impute(self.df, columns, strategies, inplace, capture_likelihood)
 
     def impute(self):
         pass
@@ -57,8 +59,8 @@ class Mender:
     def split(self):
         pass
 
-    def amend_column(self):
-        pass
+    def amend_column(self, column, func, inplace=False):
+        _amend_column(self.df, column, func, inplace)
 
     def apply_impute(self, impute_strategy_map=None):
         pass

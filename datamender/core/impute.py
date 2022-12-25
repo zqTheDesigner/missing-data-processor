@@ -29,10 +29,13 @@ class ImputationStrategies:
         return "__mode", df[column].fillna(mode[0]).astype(d_type)
 
 
-def impute(df, columns, strategies, inplace):
+def impute(df, columns, strategies, inplace, capture_likelihood):
     """
     strategies: an array of functions from ImputationStrategies
     """
+    if capture_likelihood:
+        for column in columns:
+            df[column+"__is-missing"] = df[columns].isnull().astype(int)
 
     if inplace:
         if len(strategies) > 1:

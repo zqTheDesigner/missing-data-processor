@@ -29,11 +29,13 @@ def insights(df):
         "75% Quantile",
         "Mode",
         "Mode Count",
+        "Mode (%)",
         "Unique Values Count",
         "Unique Values (%)",
     ]
 
     ins = pd.DataFrame(index=ins_idx)
+    total_data = df.shape[0]
 
     # Fill up entire data frame with '-', because NaN is visually confusing
     # for k, v in df.items():
@@ -42,7 +44,6 @@ def insights(df):
 
     for k, v in df.items():
         missing_data = v.isnull().sum()
-        total_data = v.count().sum()
         ins.at["Valid Data Count", k] = total_data
         ins.at["Missing Data Count", k] = missing_data
         ins.at["Missing Data (%)", k] = round(missing_data / total_data, 4) * 100
@@ -67,9 +68,11 @@ def insights(df):
         ins.at["75% Quantile", k] = get_value(quantile_75, k)
         ins.at["Mode", k] = mode[k][0]
         ins.at["Mode Count", k] = df[k].value_counts()[mode[k][0]]
+        ins.at["Mode (%)", k] = round(df[k].value_counts()[mode[k][0]] / total_data, 4) * 100
         ins.at["Unique Values Count", k] = df[k].drop_duplicates().count()
         ins.at["Unique Values (%)", k] = (
             round(df[k].drop_duplicates().count() / df[k].count().sum(), 4) * 100
         )
+        
 
     return ins
