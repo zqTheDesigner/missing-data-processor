@@ -1,5 +1,7 @@
-def amend_column(df, column, func, inplace):
-    amended = df[column].apply(func)
+def amend_column(df, column, func, inplace, *args, **kwargs):
+    amended = df[column].apply(func, **kwargs)
+
+    print(kwargs)
 
     if inplace:
         df[column] = amended

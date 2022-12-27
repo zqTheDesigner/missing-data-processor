@@ -12,6 +12,7 @@ from .core.encode import EncodingStrategies
 
 from .core.amend_column import amend_column as _amend_column
 
+from .core.sklearn_impute import sklearn_impute as _sklearn_impute
 
 class Mender:
     def __init__(self, df):
@@ -32,11 +33,16 @@ class Mender:
     def setignore(self, rows=None, columns=None):
         self.df = _setignore(self.df, rows, columns)
 
-    def show_incomplete(self, count = 5):
+    def show_incomplete(self, count=5):
         return self.df[self.df.isnull().any(axis=1)].head(count)
 
-    def impute_columns(self, columns, strategies, inplace=False, capture_likelihood=False):
+    def impute_columns(
+        self, columns, strategies, inplace=False, capture_likelihood=False
+    ):
         _impute(self.df, columns, strategies, inplace, capture_likelihood)
+    
+    def sklearn_impute(self, columns, strategy, inplace=False, remark="", *_, **kwargs):
+        _sklearn_impute(self.df, columns, strategy, inplace, remark, **kwargs )
 
     def impute(self):
         pass
@@ -59,8 +65,9 @@ class Mender:
     def split(self):
         pass
 
-    def amend_column(self, column, func, inplace=False):
-        _amend_column(self.df, column, func, inplace)
+    def amend_column(self, column, func, inplace=False, *args, **kwargs):
+        print(kwargs)
+        _amend_column(self.df, column, func, inplace, args, **kwargs)
 
     def apply_impute(self, impute_strategy_map=None):
         pass

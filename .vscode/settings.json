@@ -1,5 +1,5 @@
 {
-  "python.formatting.provider": "black",
+  "python.formatting.provider": "yapf",
   "[python]": {
     "editor.detectIndentation": false,
     "editor.insertSpaces": true,
