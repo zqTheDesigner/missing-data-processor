@@ -41,8 +41,8 @@ class Mender:
     ):
         _impute(self.df, columns, strategies, inplace, capture_likelihood)
     
-    def sklearn_impute(self, columns, strategy, inplace=False, remark="", *_, **kwargs):
-        _sklearn_impute(self.df, columns, strategy, inplace, remark, **kwargs )
+    # def sklearn_impute(self, columns, strategy, inplace=False, remark="", *_, **kwargs):
+    #     _sklearn_impute(self.df, columns, strategy, inplace, remark, **kwargs )
 
     def impute(self):
         pass
